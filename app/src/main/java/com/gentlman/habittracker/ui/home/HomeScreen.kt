@@ -1,5 +1,6 @@
 package com.gentlman.habittracker.ui.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +22,7 @@ import java.time.LocalDate
 fun HomeScreen(
     uiState: HabitUiState,
     onCompletionChange: (Long, Boolean) -> Unit,
+    onEditClick: (HabitEntity) -> Unit,
     onAddClick: () -> Unit
 ) {
     Scaffold(
@@ -84,7 +86,8 @@ fun HomeScreen(
                         HabitCard(
                             habit = habit,
                             isCompleted = habit.id in uiState.completedHabitIds,
-                            onCompletionChange = onCompletionChange
+                            onCompletionChange = onCompletionChange,
+                            onEditClick = { onEditClick(habit) }
                         )
                     }
                 }
@@ -97,10 +100,13 @@ fun HomeScreen(
 private fun HabitCard(
     habit: HabitEntity,
     isCompleted: Boolean,
-    onCompletionChange: (Long, Boolean) -> Unit
+    onCompletionChange: (Long, Boolean) -> Unit,
+    onEditClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onEditClick)
     ) {
         Row(
             modifier = Modifier
